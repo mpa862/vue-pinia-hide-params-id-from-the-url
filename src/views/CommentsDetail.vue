@@ -1,9 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useCasheModuleStore } from '../stores/cacheModule'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 const CasheModuleStore = useCasheModuleStore()
+const router = useRouter()
+
 const comment = ref({})
 
 const getComment = async () => {
@@ -13,7 +16,12 @@ const getComment = async () => {
   comment.value = data
 }
 
+const validateCommentId = () => {
+  if (!CasheModuleStore.getComment?.id) router.push({ name: 'comments' })
+}
+
 onMounted(async () => {
+  validateCommentId()
   await getComment()
 })
 </script>
