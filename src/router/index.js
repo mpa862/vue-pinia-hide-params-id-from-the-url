@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import('../views/Posts.vue')
     },
     {
-      path: '/post/:id',
+      path: '/post',
       name: 'postDetail',
       component: () => import('../views/PostsDetail.vue')
     },
@@ -19,7 +19,7 @@ const router = createRouter({
       component: () => import('../views/Comments.vue')
     },
     {
-      path: '/comment/:id',
+      path: '/comment',
       name: 'commentDetail',
       component: () => import('../views/CommentsDetail.vue')
     }

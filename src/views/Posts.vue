@@ -1,7 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { useCasheModuleStore } from '../stores/cacheModule.js'
 import axios from 'axios'
+
+const casheModuleStore = useCasheModuleStore()
+const router = useRouter()
 
 const posts = ref([])
 
@@ -10,6 +14,12 @@ const headers = ref(['userId', 'id', 'title', 'body'])
 const getPosts = async () => {
   const { data } = await axios.get('https://jsonplaceholder.typicode.com/posts')
   posts.value = data
+}
+
+const redirectPage = (e) => {
+  let { id } = e
+  casheModuleStore.setModule('post', { id })
+  router.push({ name: 'postDetail' })
 }
 
 onMounted(async () => {
@@ -30,9 +40,7 @@ onMounted(async () => {
           {{ post[header] }}
         </td>
         <td>
-          <RouterLink :to="`post/${post.id}`">
-            <button>View</button>
-          </RouterLink>
+          <button @click="redirectPage(post)">View</button>
         </td>
       </tr>
     </tbody>

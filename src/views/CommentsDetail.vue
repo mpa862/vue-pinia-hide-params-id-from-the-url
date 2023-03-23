@@ -1,14 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useCasheModuleStore } from '../stores/cacheModule'
 import axios from 'axios'
 
-const route = useRoute()
+const CasheModuleStore = useCasheModuleStore()
 const comment = ref({})
 
 const getComment = async () => {
   const { data } = await axios.get(
-    `https://jsonplaceholder.typicode.com/comments/${route.params.id}`
+    `https://jsonplaceholder.typicode.com/comments/${CasheModuleStore.getComment.id}`
   )
   comment.value = data
 }

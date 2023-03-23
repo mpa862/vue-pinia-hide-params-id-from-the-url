@@ -1,7 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { useCasheModuleStore } from '../stores/cacheModule.js'
 import axios from 'axios'
+
+const casheModuleStore = useCasheModuleStore()
+const router = useRouter()
 
 const comments = ref([])
 
@@ -10,6 +14,12 @@ const headers = ref(['postId', 'id', 'name', 'email', 'body'])
 const getComments = async () => {
   const { data } = await axios.get('https://jsonplaceholder.typicode.com/comments')
   comments.value = data
+}
+
+const redirectPage = (e) => {
+  let { id } = e
+  casheModuleStore.setModule('comment', { id })
+  router.push({ name: 'commentDetail' })
 }
 
 onMounted(async () => {
@@ -30,9 +40,7 @@ onMounted(async () => {
           {{ comment[header] }}
         </td>
         <td>
-          <RouterLink :to="`comment/${comment.id}`">
-            <button>View</button>
-          </RouterLink>
+          <button @click="redirectPage(comment)">View</button>
         </td>
       </tr>
     </tbody>
